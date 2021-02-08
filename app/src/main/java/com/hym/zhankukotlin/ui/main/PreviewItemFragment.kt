@@ -34,6 +34,7 @@ class PreviewItemFragment : Fragment(), Observer<LifecycleOwner> {
     private lateinit var mPageViewModel: PageViewModel
     private var mBinding: FragmentMainBinding? = null
     private lateinit var mCatagoryItem: CatagoryItem
+    private var mUrl: String? = null
 
     //private lateinit var mPreviewItemAdapter: PreviewItemAdapter
     private lateinit var mPagingPreviewItemAdapter: PagingPreviewItemAdapter
@@ -45,6 +46,7 @@ class PreviewItemFragment : Fragment(), Observer<LifecycleOwner> {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putParcelable(CATAGORY_ITEM, mCatagoryItem)
+        outState.putString(CATAGORY_URL, mUrl)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,6 +56,7 @@ class PreviewItemFragment : Fragment(), Observer<LifecycleOwner> {
 
         val activeBundle = savedInstanceState ?: arguments
         mCatagoryItem = activeBundle!!.getParcelable(CATAGORY_ITEM)!!
+        mUrl = activeBundle.getString(CATAGORY_URL) ?: mCatagoryItem.url
 
         mPageViewModel = ViewModelProvider(this).get(PageViewModel::class.java)
         //mPreviewItemAdapter = PreviewItemAdapter()
@@ -164,7 +167,7 @@ class PreviewItemFragment : Fragment(), Observer<LifecycleOwner> {
 
     override fun onResume() {
         super.onResume()
-        mPageViewModel.setUrl(mCatagoryItem.url)
+        mPageViewModel.setUrl(mUrl)
     }
 
     override fun onDestroyView() {
@@ -182,6 +185,7 @@ class PreviewItemFragment : Fragment(), Observer<LifecycleOwner> {
             binding.pagedLayout.pageArr = previewResult.pagedArr
         })
         mPageViewModel.previewUrl.observe(viewLifecycleOwner, Observer { url ->
+            mUrl = url
             binding.catagoryLink.text = url
         })
         mPageViewModel.pagingFlow.observe(viewLifecycleOwner, Observer {
@@ -209,6 +213,7 @@ class PreviewItemFragment : Fragment(), Observer<LifecycleOwner> {
     companion object {
         val TAG = PreviewItemFragment::class.java.simpleName
         const val CATAGORY_ITEM = "CATAGORY_ITEM"
+        const val CATAGORY_URL = "CATAGORY_URL"
 
         @JvmStatic
         fun newInstance(item: CatagoryItem): PreviewItemFragment {
