@@ -35,6 +35,11 @@ class TagUrlItemAdapter : NameValueAdapter<String, String>() {
         }
     }
 
+    override fun onViewRecycled(holder: BindingViewHolder<ButtonItemBinding>) {
+        super.onViewRecycled(holder)
+        holder.binding.buttonView.setOnClickListener(null)
+    }
+
     fun setTagItems(tagItems: List<CatagoryItem>) {
         val tagUrlMap: MutableMap<String, String> = LinkedHashMap(tagItems.size)
         for (tagItem in tagItems) {
