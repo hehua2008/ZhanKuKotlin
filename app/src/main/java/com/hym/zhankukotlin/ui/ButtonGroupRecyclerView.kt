@@ -201,7 +201,7 @@ class ButtonGroupRecyclerView @JvmOverloads constructor(
         setCheckedStateForView(itemId, false)
         updateCheckedStates(itemId, false)
         mCheckedItemId = NO_ID
-        // recordCheckedItemId(mCheckedItemId, true);
+        // recordCheckedItemId(mCheckedItemId, true)
         dispatchOnButtonChecked(itemId, false)
     }
 
@@ -486,7 +486,7 @@ class ButtonGroupRecyclerView @JvmOverloads constructor(
         buttonChild.addOnCheckedChangeListener(mCheckedStateTracker)
 
         // Enables surface layer drawing for semi-opaque strokes
-        // buttonChild.setShouldDrawSurfaceColorStroke(true);
+        // buttonChild.setShouldDrawSurfaceColorStroke(true)
         MaterialButtonHelper.setShouldDrawSurfaceColorStroke(buttonChild, true)
     }
 

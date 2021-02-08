@@ -21,7 +21,6 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
-import com.hym.zhankukotlin.MyApplication
 import com.hym.zhankukotlin.R
 import com.hym.zhankukotlin.databinding.FragmentMainBinding
 import com.hym.zhankukotlin.network.CatagoryItem
@@ -42,7 +41,6 @@ class PreviewItemFragment : Fragment(), Observer<LifecycleOwner> {
     private lateinit var mCatagoryItemAdapter: CatagoryItemAdapter
     private lateinit var mButtonItemDecoration: ItemDecoration
     private lateinit var mPreviewItemDecoration: ItemDecoration
-    private lateinit var mOnScrollListener: RecyclerView.OnScrollListener
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -99,15 +97,6 @@ class PreviewItemFragment : Fragment(), Observer<LifecycleOwner> {
                 }
             }
         }
-        mOnScrollListener = object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if (newState != RecyclerView.SCROLL_STATE_IDLE) {
-                    MyApplication.imageLoader.pause()
-                } else {
-                    MyApplication.imageLoader.resume()
-                }
-            }
-        }
     }
 
     override fun onCreateView(
@@ -117,7 +106,7 @@ class PreviewItemFragment : Fragment(), Observer<LifecycleOwner> {
         val binding = mBinding!!
 
         val typedValue = TypedValue()
-        requireContext().theme.resolveAttribute(R.attr.colorAccent, typedValue, true);
+        requireContext().theme.resolveAttribute(R.attr.colorAccent, typedValue, true)
         binding.swipeRefresh.setColorSchemeColors(typedValue.data)
         binding.swipeRefresh.setOnRefreshListener { mPagingPreviewItemAdapter.refresh() }
 
