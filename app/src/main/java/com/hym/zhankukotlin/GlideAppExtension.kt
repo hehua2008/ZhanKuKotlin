@@ -14,7 +14,7 @@ object GlideAppExtension {
 
     @JvmField
     val DRAWABLE_CORSS_FADE = DrawableTransitionOptions.withCrossFade(
-        DrawableCrossFadeFactory.Builder().setCrossFadeEnabled(false).build()
+            DrawableCrossFadeFactory.Builder().setCrossFadeEnabled(false).build()
     )
 
     @JvmStatic

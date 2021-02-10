@@ -4,8 +4,8 @@ import android.os.Parcel
 import android.os.Parcelable
 
 class CatagoryItem private constructor(
-    val url: String,
-    val title: String
+        val url: String,
+        val title: String
 ) : Parcelable {
     private val mSubItems: MutableList<CatagoryItem> = mutableListOf()
     private val mSub2Items: MutableList<CatagoryItem> = mutableListOf()

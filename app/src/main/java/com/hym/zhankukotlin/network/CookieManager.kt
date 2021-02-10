@@ -13,7 +13,7 @@ import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 class CookieManager private constructor(
-    private val mContext: Context
+        private val mContext: Context
 ) : CookieJar {
     override fun saveFromResponse(url: HttpUrl, cookies: MutableList<Cookie>) {
         val host = url.url().host
@@ -60,7 +60,7 @@ class CookieManager private constructor(
     }
 
     private class CookieSerialize(@field:Transient var mCookies: MutableList<Cookie>) :
-        Serializable {
+            Serializable {
         @Throws(IOException::class)
         private fun writeObject(out: ObjectOutputStream) {
             val size = mCookies.size
@@ -91,10 +91,10 @@ class CookieManager private constructor(
                 val secure = input.readBoolean()
                 val httpOnly = input.readBoolean()
                 val builder = Cookie.Builder()
-                    .name(name)
-                    .value(value)
-                    .expiresAt(expiresAt)
-                    .path(path)
+                        .name(name)
+                        .value(value)
+                        .expiresAt(expiresAt)
+                        .path(path)
                 if (hostOnly) {
                     builder.hostOnlyDomain(domain)
                 } else {

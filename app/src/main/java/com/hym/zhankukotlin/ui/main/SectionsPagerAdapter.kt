@@ -10,14 +10,14 @@ import com.hym.zhankukotlin.network.CatagoryItem
  * one of the sections/tabs/pages.
  */
 class SectionsPagerAdapter(fm: FragmentManager) :
-    FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+        FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     private var mCatagoryItems: List<CatagoryItem> = emptyList()
 
     override fun getItem(position: Int): Fragment {
         return PreviewItemFragment.newInstance(mCatagoryItems[position])
     }
 
-    override fun getPageTitle(position: Int): CharSequence? {
+    override fun getPageTitle(position: Int): CharSequence {
         return mCatagoryItems[position].title
     }
 

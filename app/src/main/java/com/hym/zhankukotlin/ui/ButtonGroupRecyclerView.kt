@@ -23,13 +23,13 @@ import java.lang.reflect.Method
 import java.util.*
 
 class ButtonGroupRecyclerView @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = R.attr.buttonGroupRecyclerViewStyle
+        context: Context,
+        attrs: AttributeSet? = null,
+        defStyleAttr: Int = R.attr.buttonGroupRecyclerViewStyle
 ) : RecyclerView(
-    MaterialThemeOverlay.wrap(context, attrs, defStyleAttr, DEF_STYLE_RES),
-    attrs,
-    defStyleAttr
+        MaterialThemeOverlay.wrap(context, attrs, defStyleAttr, DEF_STYLE_RES),
+        attrs,
+        defStyleAttr
 ) {
     /**
      * Interface definition for a callback to be invoked when a [MaterialButton] is checked or
@@ -82,20 +82,19 @@ class ButtonGroupRecyclerView @JvmOverloads constructor(
             return
         }
         super.addView(child, index, params)
-        val buttonChild = child
         // Sets sensible default values and an internal checked change listener for this child
-        setupButtonChild(buttonChild)
+        setupButtonChild(child)
 
         // Reorders children if a checked child was added to this layout
-        if (buttonChild.isChecked) {
-            val childItemId = getChildItemId(buttonChild)
+        if (child.isChecked) {
+            val childItemId = getChildItemId(child)
             updateCheckedStates(childItemId, true)
             setCheckedItemId(childItemId)
-        } else if (isChildChecked(buttonChild) || (mCheckedItemIdSet.isEmpty()
-                    && mDefaultCheckedPos == getChildLayoutPosition(buttonChild))
+        } else if (isChildChecked(child) || (mCheckedItemIdSet.isEmpty()
+                        && mDefaultCheckedPos == getChildLayoutPosition(child))
         ) {
-            MaterialButtonHelper.setButtonCheckedWithoutNotifyListeners(buttonChild, true)
-            val childItemId = getChildItemId(buttonChild)
+            MaterialButtonHelper.setButtonCheckedWithoutNotifyListeners(child, true)
+            val childItemId = getChildItemId(child)
             updateCheckedStates(childItemId, true)
             setCheckedItemId(childItemId)
         }
@@ -106,7 +105,7 @@ class ButtonGroupRecyclerView @JvmOverloads constructor(
         (child as MaterialButton).removeOnCheckedChangeListener(mCheckedStateTracker)
     }
 
-    override fun onSaveInstanceState(): Parcelable? {
+    override fun onSaveInstanceState(): Parcelable {
         val state = SavedState(super.onSaveInstanceState())
         state.checkedItemId = mCheckedItemId
         state.checkedItemIdList = ArrayList(mCheckedItemIdSet)
@@ -118,11 +117,10 @@ class ButtonGroupRecyclerView @JvmOverloads constructor(
             super.onRestoreInstanceState(state)
             return
         }
-        val savedState = state
-        super.onRestoreInstanceState(savedState.superState)
+        super.onRestoreInstanceState(state.superState)
         resetChecked()
-        setCheckedItemId(savedState.checkedItemId, false)
-        for (checkedItemId in savedState.checkedItemIdList!!) {
+        setCheckedItemId(state.checkedItemId, false)
+        for (checkedItemId in state.checkedItemIdList!!) {
             setCheckedItemId(checkedItemId, false)
         }
     }
@@ -589,11 +587,11 @@ class ButtonGroupRecyclerView @JvmOverloads constructor(
 
     abstract class ButtonCheckedAdapter<VH : ViewHolder?> : Adapter<VH>() {
         private val mButtonListenerMap: MutableMap<VH, MaterialButton.OnCheckedChangeListener> =
-            WeakHashMap()
+                WeakHashMap()
 
         abstract override fun getItemId(position: Int): Long
         abstract fun getOnCheckedChangeListener(
-            holder: VH, position: Int
+                holder: VH, position: Int
         ): MaterialButton.OnCheckedChangeListener?
 
         @CallSuper
@@ -607,8 +605,8 @@ class ButtonGroupRecyclerView @JvmOverloads constructor(
                 button.removeOnCheckedChangeListener(oldListener)
             }
             val newListener = getOnCheckedChangeListener(
-                holder,
-                position
+                    holder,
+                    position
             )
             if (newListener != null) {
                 mButtonListenerMap[holder] = newListener
@@ -638,8 +636,8 @@ class ButtonGroupRecyclerView @JvmOverloads constructor(
         private var setShouldDrawSurfaceColorStroke: Method? = null
         private var onCheckedChangeListeners: Field? = null
         fun setShouldDrawSurfaceColorStroke(
-            button: MaterialButton?,
-            shouldDrawSurfaceColorStroke: Boolean
+                button: MaterialButton?,
+                shouldDrawSurfaceColorStroke: Boolean
         ) {
             if (setShouldDrawSurfaceColorStroke === null) {
                 Log.w(LOG_TAG, "setShouldDrawSurfaceColorStroke failed: method is null")
@@ -660,7 +658,7 @@ class ButtonGroupRecyclerView @JvmOverloads constructor(
             return try {
                 val obj = onCheckedChangeListeners?.get(button)
                 val oriSet: MutableSet<MaterialButton.OnCheckedChangeListener> =
-                    obj as MutableSet<MaterialButton.OnCheckedChangeListener>
+                        obj as MutableSet<MaterialButton.OnCheckedChangeListener>
                 val retSet: MutableSet<MaterialButton.OnCheckedChangeListener> = LinkedHashSet()
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     oriSet.removeIf { onCheckedChangeListener ->
@@ -679,8 +677,8 @@ class ButtonGroupRecyclerView @JvmOverloads constructor(
         }
 
         fun restoreOnCheckedChangeListeners(
-            button: MaterialButton?,
-            set: Set<MaterialButton.OnCheckedChangeListener>?
+                button: MaterialButton?,
+                set: Set<MaterialButton.OnCheckedChangeListener>?
         ) {
             if (set === null) {
                 return
@@ -697,11 +695,11 @@ class ButtonGroupRecyclerView @JvmOverloads constructor(
         }
 
         fun setButtonCheckedWithoutNotifyListeners(
-            button: MaterialButton,
-            checked: Boolean
+                button: MaterialButton,
+                checked: Boolean
         ) {
             val set = removeAllOnCheckedChangeListeners(
-                button
+                    button
             )
             button.isChecked = checked
             restoreOnCheckedChangeListeners(button, set)
@@ -711,7 +709,7 @@ class ButtonGroupRecyclerView @JvmOverloads constructor(
             var method: Method? = null
             try {
                 method = MaterialButton::class.java.getDeclaredMethod(
-                    "setShouldDrawSurfaceColorStroke", Boolean::class.javaPrimitiveType
+                        "setShouldDrawSurfaceColorStroke", Boolean::class.javaPrimitiveType
                 )
                 method.isAccessible = true
             } catch (e: ReflectiveOperationException) {
@@ -739,16 +737,16 @@ class ButtonGroupRecyclerView @JvmOverloads constructor(
         // passed in.
         val ctx = getContext()
         val a = ctx.obtainStyledAttributes(
-            attrs, R.styleable.ButtonGroupRecyclerView, defStyleAttr, DEF_STYLE_RES
+                attrs, R.styleable.ButtonGroupRecyclerView, defStyleAttr, DEF_STYLE_RES
         )
         val single = a.getBoolean(R.styleable.ButtonGroupRecyclerView_singleSelection, false)
         isSingleSelection = single
         mDefaultCheckedPos =
-            a.getInteger(R.styleable.ButtonGroupRecyclerView_checkedButtonPos, NO_POSITION)
+                a.getInteger(R.styleable.ButtonGroupRecyclerView_checkedButtonPos, NO_POSITION)
         recordCheckedItemId(mCheckedItemId, true)
         isSelectionRequired = a.getBoolean(
-            R.styleable.ButtonGroupRecyclerView_selectionRequired,
-            false
+                R.styleable.ButtonGroupRecyclerView_selectionRequired,
+                false
         )
         isChildrenDrawingOrderEnabled = true
         a.recycle()
