@@ -6,7 +6,7 @@ import com.hym.zhankukotlin.network.CatagoryItem
 import com.hym.zhankukotlin.ui.NameValueAdapter
 import com.hym.zhankukotlin.ui.main.PreviewItemFragment
 import com.hym.zhankukotlin.ui.tag.TagActivity
-import com.hym.zhankukotlin.util.ViewUtils.getActivityContext
+import com.hym.zhankukotlin.util.ViewUtils.getActivity
 import java.util.*
 
 class TagUrlItemAdapter : NameValueAdapter<String, String>() {
@@ -20,13 +20,13 @@ class TagUrlItemAdapter : NameValueAdapter<String, String>() {
         holder.button.isCheckable = false
         holder.button.text = mNameValues[position].key
         holder.button.setOnClickListener { v ->
-            val context = v.getActivityContext() ?: return@setOnClickListener
+            val activity = v.getActivity() ?: return@setOnClickListener
             val tagUrl = mNameValues[position].value
-            val intent = Intent(context, TagActivity::class.java)
+            val intent = Intent(activity, TagActivity::class.java)
             val catagoryItem: CatagoryItem = CatagoryItem.getCatagoryItem(tagUrl)
                     ?: return@setOnClickListener
             intent.putExtra(PreviewItemFragment.CATAGORY_ITEM, catagoryItem)
-            context.startActivity(intent)
+            activity.startActivity(intent)
         }
     }
 
