@@ -1,17 +1,14 @@
 package com.hym.zhankukotlin.ui.main
 
 import com.google.android.material.button.MaterialButton
-import com.hym.zhankukotlin.databinding.ButtonItemBinding
 import com.hym.zhankukotlin.network.CatagoryItem
-import com.hym.zhankukotlin.ui.BindingViewHolder
 import com.hym.zhankukotlin.ui.NameValueAdapter
 import java.util.*
 
 class CatagoryItemAdapter(private val mPageViewModel: PageViewModel) :
         NameValueAdapter<String, String>() {
-    override fun getOnCheckedChangeListener(
-            holder: BindingViewHolder<ButtonItemBinding>, position: Int
-    ): MaterialButton.OnCheckedChangeListener {
+    override fun getOnCheckedChangeListener(holder: ViewHolder, position: Int)
+            : MaterialButton.OnCheckedChangeListener {
         return MaterialButton.OnCheckedChangeListener { button, isChecked ->
             if (isChecked) {
                 mPageViewModel.setSubcat(mNameValues[position].value)
@@ -19,10 +16,9 @@ class CatagoryItemAdapter(private val mPageViewModel: PageViewModel) :
         }
     }
 
-    override fun onBindViewHolder(holder: BindingViewHolder<ButtonItemBinding>, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         super.onBindViewHolder(holder, position)
-        val binding = holder.binding
-        binding.buttonView.text = mNameValues[position].key
+        holder.button.text = mNameValues[position].key
     }
 
     fun setTitleSubcatMap(parentCatagoryItem: CatagoryItem) {
