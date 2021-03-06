@@ -214,7 +214,7 @@ class PreviewItemFragment : Fragment(), Observer<LifecycleOwner> {
     }
 
     companion object {
-        val TAG = PreviewItemFragment::class.java.simpleName
+        val TAG = PreviewItemFragment::class.simpleName
         const val CATAGORY_ITEM = "CATAGORY_ITEM"
         const val CATAGORY_URL = "CATAGORY_URL"
 
