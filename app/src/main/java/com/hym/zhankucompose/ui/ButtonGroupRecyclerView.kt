@@ -674,7 +674,7 @@ class ButtonGroupRecyclerView @JvmOverloads constructor(
 
     companion object {
         private const val LOG_TAG = "ButtonGroupRecyclerView"
-        private const val DEF_STYLE_RES = R.style.Widget_ButtonGroupRecyclerView
+        private val DEF_STYLE_RES = R.style.Widget_ButtonGroupRecyclerView
     }
 
     init {
