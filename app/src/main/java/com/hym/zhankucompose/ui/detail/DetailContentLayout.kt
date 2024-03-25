@@ -1,5 +1,6 @@
 package com.hym.zhankucompose.ui.detail
 
+import android.graphics.drawable.Drawable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Spacer
@@ -14,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalView
@@ -21,6 +23,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import com.bumptech.glide.integration.compose.rememberGlidePreloadingData
 import com.hym.zhankucompose.R
 import com.hym.zhankucompose.compose.COMMON_PADDING
 import com.hym.zhankucompose.ui.photoviewer.UrlPhotoInfo
@@ -47,7 +50,7 @@ fun DetailContentLayout(
         ImageVector.vectorResource(R.drawable.vector_image_broken)
     )
     val sizeCache = remember(detailContents) {
-        MutableList<IntSize?>(detailContents.size) { null }
+        mutableMapOf<DetailImage, IntSize>()
     }
 
     val view = LocalView.current
@@ -76,6 +79,35 @@ fun DetailContentLayout(
     BoxWithConstraints {
         val maxWidth = constraints.maxWidth
 
+        val glidePreloadingData =
+            rememberGlidePreloadingData(
+                data = detailContents,
+                preloadImageSize = Size(1f, 1f),
+                numberOfItemsToPreload = 2
+            ) { item, requestBuilder ->
+                // preloadImageSize is applied for you, but .load() is not because determining the
+                // model from the underlying data isn't trivial. Don't forget to call .load()!
+                if (item is DetailImage) {
+                    val size = sizeCache[item] ?: item.data.run {
+                        if (maxWidth != Constraints.Infinity && width > 0 && height > 0) {
+                            IntSize(
+                                maxWidth, (maxWidth * height / width.toFloat()).roundToInt()
+                            )
+                        } else null
+                    }
+                    requestBuilder.load(item.data.url).run {
+                        if (size == null) this
+                        else override(size.width, size.height)
+                    }
+                } else {
+                    // Do this will print log:
+                    // Load failed for [null] with dimensions [0x0]
+                    // class com.bumptech.glide.load.engine.GlideException: Received null model
+                    // But we have to do this, or else throw "load() not called before into() error"
+                    requestBuilder.load(null as Drawable?)
+                }
+            }
+
         LazyColumn(
             modifier = modifier,
             state = lazyListState,
@@ -99,9 +131,10 @@ fun DetailContentLayout(
                     }
                 }
             ) { index ->
-                when (val detailContent = detailContents[index]) {
+                val (detailContent, preloadRequest) = glidePreloadingData[index]
+                when (detailContent) {
                     is DetailImage -> {
-                        val size = sizeCache[index] ?: detailContent.data.run {
+                        val size = sizeCache[detailContent] ?: detailContent.data.run {
                             if (maxWidth != Constraints.Infinity && width > 0 && height > 0) {
                                 IntSize(
                                     maxWidth, (maxWidth * height / width.toFloat()).roundToInt()
@@ -114,7 +147,7 @@ fun DetailContentLayout(
                             loadingPainter = loadingPainter,
                             failurePainter = failurePainter,
                             size = size,
-                            onGetSize = { sizeCache[index] = it }
+                            onGetSize = { sizeCache[detailContent] = it }
                         ) { detailImage ->
                             val act = activity ?: return@DetailContentImage
                             if (act !is DetailActivity) return@DetailContentImage
