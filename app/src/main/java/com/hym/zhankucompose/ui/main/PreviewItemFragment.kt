@@ -70,6 +70,7 @@ class PreviewItemFragment : Fragment(), Observer<LifecycleOwner>, TabReselectedC
         private set
     private var mSubCate: SubCate? = null
     private val mPageViewModel: PreviewPageViewModel by viewModels()
+    private var mComposeView: ComposeView? = null
     private lateinit var mRequestManager: RequestManager
 
     private var scrollToTop: () -> Unit = EMPTY_BLOCK
@@ -103,6 +104,7 @@ class PreviewItemFragment : Fragment(), Observer<LifecycleOwner>, TabReselectedC
         binding.swipeRefresh.setColorSchemeColors(typedValue.data)
         */
         return ComposeView(requireContext()).apply {
+            mComposeView = this
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 ComposeTheme {
@@ -237,6 +239,8 @@ class PreviewItemFragment : Fragment(), Observer<LifecycleOwner>, TabReselectedC
 
     override fun onDestroyView() {
         super.onDestroyView()
+        mComposeView?.disposeComposition()
+        mComposeView = null
         scrollToTop = EMPTY_BLOCK
     }
 
