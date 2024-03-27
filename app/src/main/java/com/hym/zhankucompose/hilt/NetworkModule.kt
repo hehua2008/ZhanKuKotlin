@@ -44,6 +44,8 @@ private val JsonDefault = Json {
     }
 }
 
+private val JsonDefaultFactory = JsonDefault.asConverterFactory("application/json".toMediaType())
+
 @Module
 @InstallIn(SingletonComponent::class)
 class NetworkModule {
@@ -74,7 +76,7 @@ class NetworkModule {
         return Retrofit.Builder()
             .client(okHttpClient)
             .baseUrl(Constants.API_URL)
-            .addConverterFactory(JsonDefault.asConverterFactory("application/json".toMediaType()))
+            .addConverterFactory(ConverterFactoryDelegate(JsonDefaultFactory))
             .callbackExecutor(Dispatchers.IO.asExecutor())
             .build()
     }
