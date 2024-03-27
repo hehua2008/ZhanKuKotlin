@@ -1,6 +1,7 @@
 package com.hym.zhankucompose.model
 
 import androidx.annotation.Keep
+import kotlinx.serialization.Serializable
 
 /**
 {
@@ -19,6 +20,7 @@ import androidx.annotation.Keep
 }
  */
 @Keep
+@Serializable
 data class ContentPage(
     val content: List<Content>,
     val first: Boolean,

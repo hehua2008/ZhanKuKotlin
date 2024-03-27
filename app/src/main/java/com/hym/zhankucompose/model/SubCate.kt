@@ -2,6 +2,7 @@ package com.hym.zhankucompose.model
 
 import androidx.annotation.Keep
 import androidx.compose.runtime.Immutable
+import kotlinx.serialization.Serializable
 
 /**
 {
@@ -22,6 +23,7 @@ import androidx.compose.runtime.Immutable
 }
  */
 @Keep
+@Serializable(SubCate.SubCateTypeAdapter::class)
 @Immutable
 data class SubCate(
     override val backgroundImage: String,
@@ -46,7 +48,9 @@ data class SubCate(
         cache()
     }
 
-    companion object {
+    companion object SubCateTypeAdapter : CateTypeAdapter<SubCate>(SubCate::class.java) {
+        override val cateCreator get() = CREATOR
+
         @JvmField
         val CREATOR = object : CateCreator<SubCate>() {
             override fun create(
@@ -63,8 +67,8 @@ data class SubCate(
                 orderNo: Int,
                 parent: Int,
                 statusId: Int,
-                subCateList: List<SubCate>,
-                type: Int
+                type: Int,
+                subCateList: List<SubCate>
             ): SubCate {
                 return SubCate(
                     backgroundImage,
@@ -83,10 +87,6 @@ data class SubCate(
                     type
                 )
             }
-        }
-
-        val SubCateTypeAdapter = object : CateTypeAdapter<SubCate>() {
-            override val cateCreator get() = CREATOR
         }
 
         val Demo = SubCate(

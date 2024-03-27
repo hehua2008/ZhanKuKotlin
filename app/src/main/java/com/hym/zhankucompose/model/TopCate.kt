@@ -2,6 +2,7 @@ package com.hym.zhankucompose.model
 
 import androidx.annotation.Keep
 import androidx.compose.runtime.Immutable
+import kotlinx.serialization.Serializable
 
 /**
 {
@@ -23,6 +24,7 @@ import androidx.compose.runtime.Immutable
 }
  */
 @Keep
+@Serializable(TopCate.TopCateTypeAdapter::class)
 @Immutable
 data class TopCate(
     override val backgroundImage: String,
@@ -38,14 +40,16 @@ data class TopCate(
     override val orderNo: Int,
     override val parent: Int,
     override val statusId: Int,
-    override val subCateList: List<SubCate>,
-    override val type: Int
+    override val type: Int,
+    override val subCateList: List<SubCate>
 ) : Cate() {
     init {
         cache()
     }
 
-    companion object {
+    companion object TopCateTypeAdapter : CateTypeAdapter<TopCate>(TopCate::class.java) {
+        override val cateCreator get() = CREATOR
+
         @JvmField
         val CREATOR = object : CateCreator<TopCate>() {
             override fun create(
@@ -62,8 +66,8 @@ data class TopCate(
                 orderNo: Int,
                 parent: Int,
                 statusId: Int,
-                subCateList: List<SubCate>,
-                type: Int
+                type: Int,
+                subCateList: List<SubCate>
             ): TopCate {
                 return TopCate(
                     backgroundImage,
@@ -79,8 +83,8 @@ data class TopCate(
                     orderNo,
                     parent,
                     statusId,
-                    subCateList,
-                    type
+                    type,
+                    subCateList
                 )
             }
         }
@@ -102,9 +106,5 @@ data class TopCate(
             subCateList = emptyList(),
             type = Int.MIN_VALUE,
         )
-
-        val TopCateTypeAdapter = object : CateTypeAdapter<TopCate>() {
-            override val cateCreator get() = CREATOR
-        }
     }
 }

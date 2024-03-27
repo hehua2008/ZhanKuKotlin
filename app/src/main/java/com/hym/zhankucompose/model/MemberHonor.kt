@@ -1,6 +1,7 @@
 package com.hym.zhankucompose.model
 
 import androidx.annotation.Keep
+import kotlinx.serialization.Serializable
 
 /**
 {
@@ -15,6 +16,7 @@ import androidx.annotation.Keep
 }
  */
 @Keep
+@Serializable
 data class MemberHonor(
     val id: Int,
     val image: String,

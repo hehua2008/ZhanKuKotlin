@@ -1,7 +1,8 @@
 package com.hym.zhankucompose.model
 
 import androidx.annotation.Keep
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /**
  * 首页推荐
@@ -11,10 +12,11 @@ import com.google.gson.annotations.SerializedName
  * GET https://api.zcool.com.cn/v2/api/u/601779?app=android&p=1&ps=10&sort=8
  */
 @Keep
+@Serializable
 data class ContentPageResponse(
     override val code: Int,
 
-    @SerializedName("data")
+    @SerialName("data")
     override val dataContent: ContentPage?,
 
     override val msg: String

@@ -1,6 +1,7 @@
 package com.hym.zhankucompose.model
 
 import androidx.annotation.Keep
+import kotlinx.serialization.Serializable
 
 /**
 {
@@ -12,6 +13,7 @@ import androidx.annotation.Keep
 }
  */
 @Keep
+@Serializable
 data class NowProvinceObj(
     override val id: Int,
     override val level: Int,

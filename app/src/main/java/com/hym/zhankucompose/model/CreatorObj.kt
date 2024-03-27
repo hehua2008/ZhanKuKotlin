@@ -4,6 +4,7 @@ import android.os.Parcelable
 import androidx.annotation.Keep
 import androidx.compose.runtime.Immutable
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
 /**
 {
@@ -19,6 +20,7 @@ import kotlinx.parcelize.Parcelize
  */
 @Parcelize
 @Keep
+@Serializable
 @Immutable
 data class CreatorObj(
     val avatar: String,

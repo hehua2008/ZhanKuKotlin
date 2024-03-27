@@ -2,6 +2,7 @@ package com.hym.zhankucompose.model
 
 import androidx.annotation.Keep
 import com.hym.zhankucompose.util.getRelativeOrActualDateString
+import kotlinx.serialization.Serializable
 
 /**
 {
@@ -52,6 +53,7 @@ import com.hym.zhankucompose.util.getRelativeOrActualDateString
 }
  */
 @Keep
+@Serializable
 data class ArticleData(
     val articleCates: List<SubCate>,
     val articleTags: List<ProductTag>,
@@ -69,7 +71,7 @@ data class ArticleData(
     val creatorObj: CreatorObj,
     val downCount: Int,
     val favoriteCount: Int,
-    val fileId: Int,
+    val fileId: Int = 0,
     val id: Int,
     val industry: Int,
     val industryStr: String,
@@ -84,7 +86,7 @@ data class ArticleData(
     val recommendCountGuess: Int,
     val recommendCountStr: String,
     val recommendStr: String,
-    val recommendTime: Long,
+    val recommendTime: Long? = null,
     val sourceUrl: String,
     val statusId: Int,
     val subcate: Int,

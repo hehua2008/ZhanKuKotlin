@@ -5,6 +5,7 @@ import androidx.compose.runtime.Immutable
 import androidx.core.text.HtmlCompat
 import com.hym.zhankucompose.util.getDateTime
 import com.hym.zhankucompose.util.getRelativeOrActualDateString
+import kotlinx.serialization.Serializable
 
 /**
 {
@@ -49,6 +50,7 @@ import com.hym.zhankucompose.util.getRelativeOrActualDateString
 }
  */
 @Keep
+@Serializable
 @Immutable
 data class Content(
     val cate: Int,
@@ -63,7 +65,7 @@ data class Content(
     val createTime: Long,
     val creator: Int,
     val creatorObj: CreatorObj,
-    val designTime: Long,
+    val designTime: Long? = null,
     val eventId: Int,
     val favoriteCount: Int,
     val favoriteCountStr: String,
@@ -78,7 +80,7 @@ data class Content(
     val recommend: Int,
     val recommendCount: Int,
     val recommendCountStr: String,
-    val recommendTime: Long,
+    val recommendTime: Long? = null,
     val status: Int,
     val subCate: Int,
     val subCateStr: String,

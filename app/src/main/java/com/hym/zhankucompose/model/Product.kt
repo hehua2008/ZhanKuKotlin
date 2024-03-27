@@ -3,6 +3,7 @@ package com.hym.zhankucompose.model
 import androidx.annotation.Keep
 import androidx.compose.runtime.Immutable
 import com.hym.zhankucompose.util.getRelativeOrActualDateString
+import kotlinx.serialization.Serializable
 
 /**
 {
@@ -68,6 +69,7 @@ import com.hym.zhankucompose.util.getRelativeOrActualDateString
 }
  */
 @Keep
+@Serializable
 @Immutable
 data class Product(
     val allowrightclick: Int,
@@ -86,13 +88,13 @@ data class Product(
     val creator: Int,
     val creatorObj: CreatorObj,
     val description: String,
-    val designTime: Long,
+    val designTime: Long? = null,
     val downCount: Int,
     val draftPercent: String,
     val eventId: Int,
     val favoriteCount: Int,
     val fieldCateObj: TopCate,
-    val fileId: Int,
+    val fileId: Int = 0,
     val id: Int,
     val imageCount: Int,
     val industry: Int,
@@ -109,7 +111,7 @@ data class Product(
     val recommendCountGuess: Int,
     val recommendCountStr: String,
     val recommendStr: String,
-    val recommendTime: Long,
+    val recommendTime: Long? = null,
     val relObjectId: Int,
     val relObjectType: Int,
     val software: String,

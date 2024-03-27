@@ -2,7 +2,8 @@ package com.hym.zhankucompose.model
 
 import androidx.annotation.Keep
 import androidx.compose.runtime.Immutable
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import kotlin.math.roundToInt
 
 /**
@@ -29,6 +30,7 @@ import kotlin.math.roundToInt
 }
  */
 @Keep
+@Serializable
 @Immutable
 data class ProductImage(
     val createTime: Long,
@@ -45,7 +47,7 @@ data class ProductImage(
     val proofCreateTime: Long,
     val proofStatus: Int,
     val proofUpdateTime: Long,
-    @SerializedName("property")
+    @SerialName("property")
     val properties: String,
     val url: String,
     val urlBig: String,
